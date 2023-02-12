@@ -125,6 +125,16 @@ The code is built with following libraries:
 - [timm](https://github.com/rwightman/pytorch-image-models)
 - [seaborn](https://seaborn.pydata.org/index.html)
 
+To make sure that your PyTorch is using GPU. Please write and execute the following python file:
+
+```
+import torch
+import torch
+print(torch.cuda.is_available()) # Should print True
+print(torch.cuda.device_count()) # see how many gpus are available to you. If you only have one gpu, should print 1.
+print(torch.cuda.current_device()) # see which gpu you are using. If you only have one gpu, should print 0.
+```
+
 ### Data Preparation
 
 Please organize the data using the directory structures listed below:
