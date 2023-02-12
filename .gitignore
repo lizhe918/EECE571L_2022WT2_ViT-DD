@@ -1,0 +1,7 @@
+.idea
+datasets/SFDDD/
+pseudo_emo_label/
+archive
+runs
+**/_pycache_
+*.pyc
