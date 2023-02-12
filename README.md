@@ -83,7 +83,7 @@ To fit your model, you may use the following command:
 ```
 python train.py fit -c ./configs/vitdd_sfddd_sbd.yaml
 ```
-You may choose the path to your own cofiguration file. The output of running the fitting process is be a .ckpt file, which stores weights for the fitted model. You can find if following the settings you used in the congifuration file (see the previous section for details).
+You may choose the path to your own cofiguration file. The output of running the fitting process is be a .ckpt file, which stores weights for the fitted model. You can find it following the settings you used in the congifuration file (see the previous section for details).
 
 To test your model, you may use the following command:
 ```
