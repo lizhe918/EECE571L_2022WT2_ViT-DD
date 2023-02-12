@@ -59,7 +59,7 @@ pseudo_label_path
 ```
 ./pseudo_label_path/emo_list.csv and ./pseudo_label_path/imgs are both copies of the same files and folders in ./pseudo_label_path/SFDDD. This is a temporary measure and we expect to improve on this problem or provide detailed intructions for how to change dataset. 
 
-## Congigurations
+## Configurations
 **NOTE**: Logically, this section should come before the next section. However, you may need to read this section first, then read the next section, and finally come back to this section again.
 
 The code uses PyTorch-Lightning for the command line interface (CLI). To fit or test our deep learning model, we need to use a YAML file to provide configuration details to the Lightning CLI. The congifuration files can be in ./configs. The vitdd_aucdd.yaml is for running the code on the AUCDD dataset, the vitdd_sfddd_sbd.yaml is to run the code on SFDDD split-by-driver, and the vitdd_sfddd_sbi.yaml is to run the code on SFDDD split-by-image. Please use the correct configuration file for your specific purpose. 
