@@ -74,7 +74,7 @@ Looking into the configuration file, you should see lots of variables and values
 
 - ckpt_path: null. This variable spefies where to find the pre-trained model you already have. If this is the first time you run the code, you do not have any pre-trained model. In this case, you must use null as the value. However, if you do have an existing model either by downloading the model online or running this repository, you should use the path to that model. 
 
-data.batch_size: &bs 32. This variable specifies the batch size used in the training. The value should depend on the size of graphical memory your GPU has. Our experiments shows that a batch size of 32 takes about 7GB of memory. Please choose the value according to your device specification.
+- data.batch_size: &bs 32. This variable specifies the batch size used in the training. The value should depend on the size of graphical memory your GPU has. Our experiments shows that a batch size of 32 takes about 7GB of memory. Please choose the value according to your device specification.
 
 ## Training and Testing
 
