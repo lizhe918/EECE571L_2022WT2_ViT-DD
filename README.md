@@ -72,7 +72,7 @@ Looking into the configuration file, you should see lots of variables and values
 
 - accelerator: gpu. This variable specifies whether you want to run on GPU or CPU. GPU is highly recommended because CPU is very inefficient for deep learning in general. Actually, we do not advise you to run the code on your device if your device does not have a GPU better than RTX3060.
 
-- ckpt_path: null. This variable spefies where to find the pre-trained model you already have. If this is the first time you run the code, you do not have any pre-trained model. In this case, you must use null as the value. However, if you do have an existing model either by downloading the model online or running this repository, you should use the path to that model. 
+- ckpt_path: null. This variable spefies where to find the pre-trained model you already have. If this is the first time you run the code, you do not have any pre-trained model. In this case, you must use null as the value. However, if you do have an existing model either by downloading the model online or running this repository, you should use the path to that model. This requires updates if you want to test your model after finishing adding additional epochs to an existing model.
 
 - data.batch_size: &bs 32. This variable specifies the batch size used in the training. The value should depend on the size of graphical memory your GPU has. Our experiments shows that a batch size of 32 takes about 7GB of memory. Please choose the value according to your device specification.
 
