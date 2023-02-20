@@ -1,0 +1,65 @@
+from paz.backend.image import load_image, show_image, write_image
+from paz.applications import HaarCascadeFrontalFace, MiniXceptionFER
+import paz.processors as pr
+from paz.backend.image.image import crop_image
+from paz.backend.image import write_image
+from paz.processors.detection import CropBoxes2D
+import numpy as np
+from pathlib import Path
+from paz.abstract import SequentialProcessor
+from retinaface import RetinaFace
+from paz.abstract.messages import Box2D
+from paz.backend import boxes
+from paz.backend.image import opencv_image
+#for every frame in SideBody
+result = np.array([['0', '0']])
+frame_offset = 10
+number_images = 5
+front_face_size = np.array([224, 224])
+for frame_number in range(1, 1 + number_images):
+    SideBody_folder = Path('datasets\DMD\SideBody\ga1s3SideBody_first590frames').__str__()
+    SideBody_path = SideBody_folder + '\%(number)06d.png' % {"number": frame_number}
+    SideBody_image = load_image(SideBody_path)
+    #find the corresponding frame in FrontBody
+    FrontBody_folder = Path('datasets\DMD\FrontBody\ga1s3FrontBody').__str__()
+    FrontBody_path = FrontBody_folder + '\%(number)06d.png' % {"number": frame_number + frame_offset}
+    FrontBody_image = load_image(FrontBody_path)
+    #Detect and crop the front face
+    crop = CropBoxes2D()
+    face = RetinaFace.detect_faces(FrontBody_path)
+    coordinates = face['face_1']['facial_area']
+    boxes2D = [Box2D(coordinates, score=0)]
+        #edge case 1: PAZ fails to detect a face
+    if (len(boxes2D) == 0):
+        result = np.append(result, [[SideBody_path, 'noFaceDetected']], axis=0) # how to cover this case in test?
+        print('No face detected for this frame')
+        continue
+        #edge case 2: PAZ detects multiple "faces" - some of these are non-face areas
+    elif (len(boxes2D) >= 2):
+        areas = np.array([])
+        for box in boxes2D:
+            area = (box.coordinates[2]-box.coordinates[0]) * (box.coordinates[3]-box.coordinates[1])
+            areas = np.append(areas, area)
+        indices_excluding_max = np.where(areas != np.amax(areas))[0]
+        for i in indices_excluding_max:
+            boxes2D = np.delete(boxes2D, i)
+        print('After removing smaller boxes: ', boxes2D) 
+    cropped_images = crop(FrontBody_image, boxes2D)
+    #Label its emotion
+    classify = MiniXceptionFER()
+    emotion = classify(cropped_images[0])['class_name']
+    #Add a row to emo_list [original SideBody frame path, emotion]
+    result = np.append(result, [[SideBody_path, emotion]], axis=0)    
+    #Resize the cropped face to 224*224
+    show_image(cropped_images[0])
+    if (cropped_images[0].shape[0] != cropped_images[0].shape[1]):
+        new_coordinates = boxes.make_box_square(boxes2D[0].coordinates)
+        box2D = Box2D(new_coordinates, 0)
+        boxes2D = [box2D]
+        cropped_images = crop(FrontBody_image, boxes2D)
+    show_image(cropped_images[0])
+    resized_image = opencv_image.resize_image(cropped_images[0], front_face_size)
+    show_image(resized_image)
+    save_path = 'pseudo_emotion_label\DMD\imgs\ga1s3frontcropped_%(number)06d.png'% {'number': frame_number + frame_offset}
+    write_image(save_path, resized_image)
+np.savetxt("emo_list.csv", result, delimiter=",", fmt='%s')
