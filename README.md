@@ -1,4 +1,45 @@
 # UBC EECE571L 2022WT2 Driver Emotion Detection Proejct
+## Quick Start for DMD Dataset
+After receiving the preprocessed DMD dataset, you should notice the following directory structure:
+```
+| -- Preprocessed_DMD
+  | ---- annotations
+    | ------ DMD
+      | -------- driver_imgs_list.csv
+      | -------- train_list.csv
+      | -------- val_list.csv
+  | ---- datasets
+    | ------ DMD
+      | -------- imgs
+      | -------- driver_imgs_list.csv
+  | ---- pseudo_emo_label
+    | ------ DMD
+      | -------- imgs
+      | -------- emo_list.csv
+    | ------ imgs
+    | ------ emo_list.csv
+```
+
+Please preserve the directory structure, and directly copy and paste them into their corresponding directory (i.e. copy everything in `./Preprocessed_DMD/annotations/` in the disk to `./annotations/` in your local repository cloned from this repo. 
+
+Then, go to the following links to download the pretrained checkpoints and place them into `./runs/vitdd/pretrained/`. 
+
+|                      Experiments                      | Accuracy |  NLL   |                                                            Checkpoints                                                            |
+| :---------------------------------------------------: | :------: | :----: | :-------------------------------------------------------------------------------------------------------------------------------: |
+|           [AUCDD](configs/vitdd_acudd.yaml)           |  0.9359  | 0.2399 |     [link](https://purdue0-my.sharepoint.com/:u:/g/personal/yunsheng_purdue_edu/EbRPfyR5QWpNjrF5jbuY5y0BXfBk4FRr0mNSYLKDMqIYYw?e=FhP7fB)      |
+| [SFDDD split-by-driver](configs/vitdd_sfddd_sbd.yaml) |  0.9251  | 0.3900 | [link](https://purdue0-my.sharepoint.com/:u:/g/personal/yunsheng_purdue_edu/EVxQRFho80VBl_WtP4XKcTUBpMdMDczu-EmlNSN-lXm86Q?e=gNYfxD) |
+| [SFDDD split-by-image](configs/vitdd_sfddd_sbi.yaml)  |  0.9963  | 0.0171 | [link](https://purdue0-my.sharepoint.com/:u:/g/personal/yunsheng_purdue_edu/Ea8r8Nnz3B1MgIKGjnX09T4B78bgU1x2woEok_FGbsqVnQ?e=4zNQw0) |
+
+Then, go to `./configs/vitdd_dmd.yaml` in your local repository cloned from this repo. Adjust line 61, 62, 63 accordingly to select the appropriate model and checkpoint path.
+
+To test the downloaded checkpoints, run the following command in the root of this repo.
+
+```
+python train.py test -c ./configs/vitdd_dmd.yaml
+```
+
+For how to train or retrain the checkpoint and test them, please carefully read the subsequent sections. I also suggest you to play with this repo first on the SFDDD dataset.
+
 ## Overview
 This is the repository for the team project of EECE571L. The team includes Zhe Li, Christina Sun, Charles Guan, and Jonny Wang. This project is based on the ViT-DD project as cited here:
 ```bibtex
