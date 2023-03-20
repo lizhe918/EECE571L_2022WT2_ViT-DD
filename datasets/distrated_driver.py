@@ -9,6 +9,7 @@ from timm.data import ImageDataset
 from timm.data.constants import IMAGENET_DEFAULT_MEAN, IMAGENET_DEFAULT_STD
 from datasets.sfddd import SFDDDParser, SFDDDMTLParser
 from datasets.aucdd import AUCDDParser, AUCDDMTLParser
+from datasets.dmd import DMDParser, DMDMTLParser
 from torchvision.transforms import InterpolationMode
 
 from pathlib import Path

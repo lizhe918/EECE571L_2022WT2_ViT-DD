@@ -1,5 +1,6 @@
 .idea
 datasets/SFDDD/
+datasets/DMD/
 pseudo_emo_label/
 archive
 runs

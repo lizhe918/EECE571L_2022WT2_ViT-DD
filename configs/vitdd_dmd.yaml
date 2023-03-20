@@ -5,7 +5,7 @@ trainer:
     class_path: pytorch_lightning.loggers.TensorBoardLogger
     init_args:
       save_dir: ./runs
-      name: vitdd/sfddd/sbd
+      name: vitdd/dmd
       version: 0
       default_hp_metric: false
   enable_checkpointing: true
@@ -58,16 +58,17 @@ trainer:
   amp_level: null
   move_metrics_to_cpu: false
   multiple_trainloader_mode: max_size_cycle
-#ckpt_path: null
-ckpt_path: ./runs/vitdd/sfddd/sbd/version_0/checkpoints/epoch=9-step=4960.ckpt
+#ckpt_path: null # for training
+#ckpt_path: ./runs/vitdd/pretrained/vitdd_sfddd_sbd.ckpt # for testing the pretrained checkpoint
+ckpt_path: ./runs/vitdd/dmd/version_0/checkpoints/epoch=9-step=1400.ckpt # for testing the retrained checkpoint
 data:
   class_path: datasets.MTLDistractedDriverLDM
   init_args:
     batch_size: &bs 32
     num_workers: 4
-    dataset: SFDDD
-    train_list: train_list_d_01.csv
-    val_list: val_list_d_01.csv
+    dataset: DMD
+    train_list: train_list.csv
+    val_list: val_list.csv
     input_size_1: 224
     input_size_2: 32
     color_jitter: 0.3
