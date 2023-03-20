@@ -22,7 +22,7 @@ The code in this repository requires the following package:
 You are advised to run the code in a virtual environment. The yaml file named with "ViT-DD_Env" may be used to faster the virtual environment construction.  
 
 ## Dataset
-The original dataset used by ViT-DD were AUCDD and SFDDD. At this point (2023-02-11), the code is not adapted for AUCDD, and there may be errors when running this code on AUCDD. However, Zhe Li has debugged the original ViT-DD code and ensured that the code is ready for SFDDD. We will also include new data from DMD from https://dmd.vicomtech.org/ in the near future. 
+The original dataset used by ViT-DD were AUCDD and SFDDD. At this point (2023-03-20), the code is not adapted for AUCDD, and there may be errors when running this code on AUCDD. However, Zhe Li has debugged the original ViT-DD code and ensured that the code is ready for SFDDD. We have also ensured the running of the model on the new dataset DMD.
 
 For SFDDD, please put the dataset in the ./datasets folder with the following directory structure unless you want to dive into the code by yourself.
 ```
@@ -59,6 +59,8 @@ pseudo_label_path
 ```
 ./pseudo_label_path/emo_list.csv and ./pseudo_label_path/imgs are both copies of the same files and folders in ./pseudo_label_path/SFDDD. This is a temporary measure and we expect to improve on this problem or provide detailed intructions for how to change dataset. 
 
+We preprocessed the DMD dataset by taking one frame per second from the videos in the DMD, and structured the dataset using the similar pattern.
+
 ## Configurations
 **NOTE**: Logically, this section should come before the next section. However, you may need to read this section first, then read the next section, and finally come back to this section again.
 
@@ -76,18 +78,20 @@ Looking into the configuration file, you should see lots of variables and values
 
 - data.batch_size: &bs 32. This variable specifies the batch size used in the training. The value should depend on the size of graphical memory your GPU has. Our experiments shows that a batch size of 32 takes about 7GB of memory. Please choose the value according to your device specification.
 
+The configuration file for running the code on the DMD dataset is located at `./configs/vitdd_dmd.yaml`. This YAML file is similar to the one for SFDDD. See the commends in the file itself to use it for testing and training.
+
 ## Training and Testing
 
 To fit your model, you may use the following command:
 
 ```
-python train.py fit -c ./configs/vitdd_sfddd_sbd.yaml
+python train.py fit -c ./configs/<config-yaml-file-name>.yaml
 ```
 You may choose the path to your own cofiguration file. The output of running the fitting process is be a .ckpt file, which stores weights for the fitted model. You can find it following the settings you used in the congifuration file (see the previous section for details).
 
 To test your model, you may use the following command:
 ```
-python train.py test -c ./configs/vitdd_sfddd_sbd.yaml
+python train.py test -c ./configs/<config-yaml-file-name>.yaml
 ```
 Before executing this command, please make sure that the ckpt_path variable in the configuration file is not null (see the previous section for details). The output of the testing process is a png of confusion matrix. Defaulty, the path to the confusion matrix is ./runs/vis. If the diagonal of the confusion matrix have values close to 1, then the fitting is successful.
 
