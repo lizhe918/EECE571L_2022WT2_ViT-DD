@@ -87,7 +87,7 @@ You may choose the path to your own cofiguration file. The output of running the
 
 To test your model, you may use the following command:
 ```
-python train.py fit -c ./configs/vitdd_sfddd_sbd.yaml
+python train.py test -c ./configs/vitdd_sfddd_sbd.yaml
 ```
 Before executing this command, please make sure that the ckpt_path variable in the configuration file is not null (see the previous section for details). The output of the testing process is a png of confusion matrix. Defaulty, the path to the confusion matrix is ./runs/vis. If the diagonal of the confusion matrix have values close to 1, then the fitting is successful.
 
