@@ -59,7 +59,7 @@ pseudo_label_path
 ```
 ./pseudo_label_path/emo_list.csv and ./pseudo_label_path/imgs are both copies of the same files and folders in ./pseudo_label_path/SFDDD. This is a temporary measure and we expect to improve on this problem or provide detailed intructions for how to change dataset. 
 
-## Congigurations
+## Configurations
 **NOTE**: Logically, this section should come before the next section. However, you may need to read this section first, then read the next section, and finally come back to this section again.
 
 The code uses PyTorch-Lightning for the command line interface (CLI). To fit or test our deep learning model, we need to use a YAML file to provide configuration details to the Lightning CLI. The congifuration files can be in ./configs. The vitdd_aucdd.yaml is for running the code on the AUCDD dataset, the vitdd_sfddd_sbd.yaml is to run the code on SFDDD split-by-driver, and the vitdd_sfddd_sbi.yaml is to run the code on SFDDD split-by-image. Please use the correct configuration file for your specific purpose. 
@@ -68,13 +68,13 @@ Looking into the configuration file, you should see lots of variables and values
 
 - save_dir: ./runs, name: vitdd/sfddd/sbd, and version:0. These three variables tell you that you should find the fitted model in the directory ./runs/vitdd/sfddd/sbd/version_0. Changing them will lead to different path of saving the fitted model, and we do not advise such change.
 
-- max_epochs: 6. This variable tells the maximum number of epochs you want to run. We suggest using 5 or 6 if you are running on your local computer, and 20 if you are running on a powerful server. The reasoning behind the choice is how powerful your device is and how long you are willing to wait. Our executions of the code shows that the time for one epoch on RTX3060 is about 90 seconds. You can modify this variable to meet your specific purpose. If you already have a model, the value to max_epochs should be larger than the value used for that model, and the effect is running more epochs based on the existing model. For example, if you already have a model with 5 epochs, when max_epochs = 5, there will be an error; when max_epochs = 10, the fitting will start from the 6 epochs and make updates based on the existing model untill 10 epochs. 
+- max_epochs: 6. This variable tells the maximum number of epochs you want to run. We suggest using 5 or 6 if you are running on your local computer, and 20 if you are running on a powerful server. The reasoning behind the choice is how powerful your device is and how long you are willing to wait. Our executions of the code shows that the time for one epoch on RTX3060 is about 90 seconds. You can modify this variable to meet your specific purpose. If you already have a model, the value to max_epochs should be larger than the value used for that model, and the effect is running more epochs based on the existing model. For example, if you already have a model with 5 epochs, when max_epochs = 5, there will be an error; when max_epochs = 10, the fitting will start from the 6th epochs and make updates based on the existing 5-epoch model until 10 epochs. 
 
 - accelerator: gpu. This variable specifies whether you want to run on GPU or CPU. GPU is highly recommended because CPU is very inefficient for deep learning in general. Actually, we do not advise you to run the code on your device if your device does not have a GPU better than RTX3060.
 
-- ckpt_path: null. This variable spefies where to find the pre-trained model you already have. If this is the first time you run the code, you do not have any pre-trained model. In this case, you must use null as the value. However, if you do have an existing model either by downloading the model online or running this repository, you should use the path to that model. 
+- ckpt_path: null. This variable spefies where to find the pre-trained model you already have. If this is the first time you run the code, you do not have any pre-trained model. In this case, you must use null as the value. However, if you do have an existing model either by downloading the model online or running this repository, you should use the path to that model. This requires updates if you want to test your model after finishing adding additional epochs to an existing model.
 
-data.batch_size: &bs 32. This variable specifies the batch size used in the training. The value should depend on the size of graphical memory your GPU has. Our experiments shows that a batch size of 32 takes about 7GB of memory. Please choose the value according to your device specification.
+- data.batch_size: &bs 32. This variable specifies the batch size used in the training. The value should depend on the size of graphical memory your GPU has. Our experiments shows that a batch size of 32 takes about 7GB of memory. Please choose the value according to your device specification.
 
 ## Training and Testing
 
@@ -83,11 +83,11 @@ To fit your model, you may use the following command:
 ```
 python train.py fit -c ./configs/vitdd_sfddd_sbd.yaml
 ```
-You may choose the path to your own cofiguration file. The output of running the fitting process is be a .ckpt file, which stores weights for the fitted model. You can find if following the settings you used in the congifuration file (see the previous section for details).
+You may choose the path to your own cofiguration file. The output of running the fitting process is be a .ckpt file, which stores weights for the fitted model. You can find it following the settings you used in the congifuration file (see the previous section for details).
 
 To test your model, you may use the following command:
 ```
-python train.py fit -c ./configs/vitdd_sfddd_sbd.yaml
+python train.py test -c ./configs/vitdd_sfddd_sbd.yaml
 ```
 Before executing this command, please make sure that the ckpt_path variable in the configuration file is not null (see the previous section for details). The output of the testing process is a png of confusion matrix. Defaulty, the path to the confusion matrix is ./runs/vis. If the diagonal of the confusion matrix have values close to 1, then the fitting is successful.
 
