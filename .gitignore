@@ -1,4 +1,5 @@
 .idea
+datasets_backup
 datasets/SFDDD/
 datasets/DMD/
 pseudo_emo_label/

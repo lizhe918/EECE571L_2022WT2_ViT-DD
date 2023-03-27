@@ -59,7 +59,7 @@ trainer:
   move_metrics_to_cpu: false
   multiple_trainloader_mode: max_size_cycle
 #ckpt_path: null
-ckpt_path: ./runs/vitdd/sfddd/sbd/version_0/checkpoints/epoch=9-step=4960.ckpt
+ckpt_path: ./runs/vitdd/pretrained/vitdd_sfddd_sbd.ckpt
 data:
   class_path: datasets.MTLDistractedDriverLDM
   init_args:

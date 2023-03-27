@@ -58,7 +58,7 @@ trainer:
   amp_level: null
   move_metrics_to_cpu: false
   multiple_trainloader_mode: max_size_cycle
-ckpt_path: null
+ckpt_path: ./runs/vitdd/pretrained/vitdd_sfddd_sbd.ckpt
 data:
   class_path: datasets.MTLDistractedDriverLDM
   init_args:

@@ -26,7 +26,7 @@ trainer:
   check_val_every_n_epoch: 1
   fast_dev_run: false
   accumulate_grad_batches: null
-  max_epochs: 10
+  max_epochs: 8
   min_epochs: null
   max_steps: -1
   min_steps: null
@@ -58,9 +58,9 @@ trainer:
   amp_level: null
   move_metrics_to_cpu: false
   multiple_trainloader_mode: max_size_cycle
-#ckpt_path: null # for training
+ckpt_path: null # for training
 #ckpt_path: ./runs/vitdd/pretrained/vitdd_sfddd_sbd.ckpt # for testing the pretrained checkpoint
-ckpt_path: ./runs/vitdd/dmd/version_0/checkpoints/epoch=9-step=1400.ckpt # for testing the retrained checkpoint
+#ckpt_path: ./runs/vitdd/dmd/version_0/checkpoints/epoch=7-step=1120.ckpt # for testing the retrained checkpoint
 data:
   class_path: datasets.MTLDistractedDriverLDM
   init_args:
