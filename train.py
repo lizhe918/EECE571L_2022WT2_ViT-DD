@@ -216,7 +216,9 @@ class ViTDDLM(LightningModule):
         self.valid_acc_1 = Accuracy(task = 'multiclass', num_classes = self.hparams.num_classes_1)
         self.valid_acc_2 = Accuracy(task = 'multiclass', num_classes = self.hparams.num_classes_2)
         self.confusion_matrix = ConfusionMatrix(task = 'multiclass', num_classes=self.hparams.num_classes_1, normalize='true')
+        self.emo_confusion_matrix = ConfusionMatrix(task = 'multiclass', num_classes=self.hparams.num_classes_2, normalize='true')
         self.test_acc_per_class = Accuracy(task = 'multiclass', average=None, num_classes=self.hparams.num_classes_1)
+        self.test_emo_acc_per_class = Accuracy(task = 'multiclass', average=None, num_classes=self.hparams.num_classes_2)
 
     def _init_frozen_params(self):
         if self.hparams.attn_only:
@@ -273,12 +275,17 @@ class ViTDDLM(LightningModule):
         d_img, d_target, face_img, emo_target = batch
         d_pred, emo_pred = self.forward(d_img, face_img)
         self.confusion_matrix.update(d_pred, d_target)
+        self.emo_confusion_matrix.update(emo_pred, emo_target)
         self.test_acc_per_class.update(d_pred, d_target)
+        self.test_emo_acc_per_class.update(emo_pred, emo_target)
 
     def on_test_end(self) -> None:
         self.visualize_confusion_matrix()
+        self.visualize_emo_confusion_matrix()
         acc_per_class = self.test_acc_per_class.compute().cpu().numpy()
+        emo_acc_per_class = self.test_emo_acc_per_class.compute().cpu().numpy()
         print(acc_per_class)
+        print(emo_acc_per_class)
 
     def configure_optimizers(self):
         optimizer = create_optimizer_v2(
@@ -302,6 +309,16 @@ class ViTDDLM(LightningModule):
         ax.set_ylabel('True Label')
         vis_path = Path(self.hparams.vis_path)
         fig.savefig(str(vis_path / f"cf_matrix_vitdd.png"), dpi=200)
+
+    def visualize_emo_confusion_matrix(self):
+        cf_matrix = self.emo_confusion_matrix.compute().cpu()
+        categories = [f'C{i}' for i in range(self.hparams.num_classes_2)]
+        fig, ax = plt.subplots(1)
+        sns.heatmap(cf_matrix, annot=True, cmap='Reds', fmt='.2f', xticklabels=categories, yticklabels=categories)
+        ax.set_xlabel('Predicted')
+        ax.set_ylabel('True Label')
+        vis_path = Path(self.hparams.vis_path)
+        fig.savefig(str(vis_path / f"cf_emo_matrix_vitdd.png"), dpi=200)
 
 
 def cli_main():
